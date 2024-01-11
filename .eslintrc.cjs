@@ -8,8 +8,12 @@ module.exports = {
     "eslint:recommended",
     "@vue/eslint-config-prettier/skip-formatting",
     "plugin:tailwindcss/recommended",
+    "plugin:vitest-globals/recommended",
   ],
   parserOptions: {
     ecmaVersion: "latest",
+  },
+  env: {
+    "vitest-globals/env": true,
   },
 };
