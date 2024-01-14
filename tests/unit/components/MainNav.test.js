@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/vue";
 
 import MainNav from "@/components/MainNav.vue";
+import { expect } from "vitest";
 
 describe("MainNav", () => {
   it("displays company name", () => {
@@ -12,5 +13,19 @@ describe("MainNav", () => {
     //this is redundant as getByText would fail if not found
     //but good practise
     expect(companyName).toBeInTheDocument();
+  });
+  it("displays menu items for navigation", () => {
+    render(MainNav);
+    const navigationMenuItems = screen.getAllByRole("listitem");
+    const navigationMenuTexts = navigationMenuItems.map((item) => item.textContent);
+    //toBe would expect exactly the same array as in memory
+    expect(navigationMenuTexts).toEqual([
+      "Teams",
+      "Locations",
+      "Life at Bobo Corp",
+      "How we hire",
+      "Students",
+      "Jobs",
+    ]);
   });
 });
