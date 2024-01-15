@@ -10,7 +10,7 @@ export default {
   props: ["text", "type"],
   computed: {
     buttonClass() {
-      return { primary: this.type === "primary", secondary: this.type === "secondary" };
+      return { [this.type]: true };
     },
   },
 };
