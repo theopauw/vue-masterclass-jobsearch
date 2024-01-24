@@ -6,23 +6,29 @@
         <label class="absolute -top-10 left-0">Role</label>
         <input
           type="text"
+          :value="role"
           placeholder="Software Engineer"
           class="w-full text-lg font-normal focus:outline-none"
+          @input="updateRole"
         />
       </div>
-      <span class="flex items-center h-full border-l border-r border-brand-gray-3 bg-brand-gray-2 px-3">
+      <span
+        class="flex h-full items-center border-l border-r border-brand-gray-3 bg-brand-gray-2 px-3"
+      >
         in
       </span>
       <div class="relative flex h-full flex-1 items-center pl-3">
         <label class="absolute -top-10 left-0">Where?</label>
         <input
           type="text"
+          :value="location"
           placeholder="Los Angeles"
           class="w-full text-lg font-normal focus:outline-none"
+          @input="location = $event.target.value"
         />
       </div>
     </div>
-    <action-button text="Search" type="secondary" class="rounded-r-3xl"/>
+    <action-button text="Search" type="secondary" class="rounded-r-3xl" />
   </form>
 </template>
 
@@ -32,5 +38,16 @@ import ActionButton from "./ActionButton.vue";
 export default {
   name: "JobSearchForm",
   components: { ActionButton },
+  data() {
+    return {
+      role: "",
+      location: "",
+    };
+  },
+  methods: {
+    updateRole(event) {
+      this.role = event.target.value;
+    },
+  },
 };
 </script>
