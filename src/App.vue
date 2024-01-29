@@ -1,18 +1,12 @@
 <template>
-  <main-nav />
-  <the-hero />
+  <main-nav/>  
+  <router-view />
 </template>
 
 <script>
-import MainNav from "@/components/Navigation/MainNav.vue";
-import TheHero from "@/components/JobSearch/TheHero.vue";
-
+import MainNav from "./components/Navigation/MainNav.vue";
 export default {
+  components: { MainNav },
   name: "App",
-  components: {
-    //ES6 shorthand for MainNav: MainNav
-    MainNav,
-    TheHero,
-  },
 };
 </script>
