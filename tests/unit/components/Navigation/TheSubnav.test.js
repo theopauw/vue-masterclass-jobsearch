@@ -6,16 +6,20 @@ import { describe, expect, it } from "vitest";
 describe("TheSubnav", () => {
   describe("when user is on jobs page", () => {
     it("displays job count", () => {
+      //this is not actually linked to vue-router
+      //just a normal object with the same name prop
+      const $route = {
+        name: "JobResults",
+      }
       render(TheSubnav, {
         global: {
+          mocks: {
+            //ES6 shorthand
+            $route,
+          },
           stubs: {
             FontAwesomeIcon: true,
           },
-        },
-        data() {
-          return {
-            onJobResultsPage: true,
-          };
         },
       });
 
@@ -27,16 +31,18 @@ describe("TheSubnav", () => {
 
   describe("when user is not on jobs page", () => {
     it("Does NOT display job count", () => {
+      const $route = {
+        name: "Home",
+      }
       render(TheSubnav, {
         global: {
+          mocks: {
+            //ES6 shorthand
+            $route,
+          },
           stubs: {
             FontAwesomeIcon: true,
           },
-        },
-        data() {
-          return {
-            onJobResultsPage: false,
-          };
         },
       });
 
