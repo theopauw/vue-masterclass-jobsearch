@@ -7,8 +7,17 @@ import { expect } from "vitest";
 
 describe("MainNav", () => {
   const renderMainNav = () => {
+    //this is not actually linked to vue-router
+    //just a normal object with the same name prop
+    const $route = {
+      name: "Home",
+    }
     render(MainNav, {
       global: {
+        mocks: {
+          //ES6 shorthand
+          $route,
+        },
         stubs: {
           FontAwesomeIcon: true,
           //RouterLinkStub has additional functionality to help the tests
