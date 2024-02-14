@@ -15,7 +15,7 @@ describe("JobListings", () => {
     expect(axios.get).toHaveBeenCalledWith("http://localhost:3000/jobs");
   });
 
-  it("creates a job listing for every job", async () => {
+  it("displays maximum of 10 jobs", async () => {
     //mock axios to return array of 15 empty objects
     axios.get.mockResolvedValue({ data: Array(15).fill({}) });
     
@@ -30,6 +30,6 @@ describe("JobListings", () => {
     
     //find* methods are async - helpful here as we wait for "api"
     const jobListings = await screen.findAllByRole("listitem");
-    expect(jobListings).toHaveLength(15);
+    expect(jobListings).toHaveLength(10);
   });
 });
