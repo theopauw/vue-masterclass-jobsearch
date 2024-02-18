@@ -2,20 +2,21 @@ import { render, screen } from "@testing-library/vue";
 import userEvent from "@testing-library/user-event";
 import { RouterLinkStub } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
+import { expect } from "vitest";
 
 import MainNav from "@/components/Navigation/MainNav.vue";
-import { expect } from "vitest";
+import { useUserStore } from "@/stores/user";
 
 describe("MainNav", () => {
   const renderMainNav = () => {
     //make a testing pinia, still relying on real store
-    const pinia = createTestingPinia({ stubActions: false });
+    const pinia = createTestingPinia();
 
     //this is not actually linked to vue-router
     //just a normal object with the same name prop
     const $route = {
       name: "Home",
-    }
+    };
     render(MainNav, {
       global: {
         plugis: [pinia],
@@ -58,6 +59,7 @@ describe("MainNav", () => {
   describe("when the user logs in", () => {
     it("displays user profile picture", async () => {
       renderMainNav();
+      const userStore = useUserStore();
 
       let profileImage = screen.queryByRole("img", {
         name: /user profile image/i,
@@ -67,6 +69,9 @@ describe("MainNav", () => {
       const loginButton = screen.getByRole("button", {
         name: /sign in/i,
       });
+      //set login state manually as the test does not have access to the real Pinia store
+      //Pinia testing allows to set store state directly without actions
+      userStore.isLoggedIn = true;
       await userEvent.click(loginButton);
       profileImage = screen.getByRole("img", {
         name: /user profile image/i,
