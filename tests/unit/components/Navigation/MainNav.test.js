@@ -1,12 +1,16 @@
 import { render, screen } from "@testing-library/vue";
 import userEvent from "@testing-library/user-event";
 import { RouterLinkStub } from "@vue/test-utils";
+import { createTestingPinia } from "@pinia/testing";
 
 import MainNav from "@/components/Navigation/MainNav.vue";
 import { expect } from "vitest";
 
 describe("MainNav", () => {
   const renderMainNav = () => {
+    //make a testing pinia, still relying on real store
+    const pinia = createTestingPinia({ stubActions: false });
+
     //this is not actually linked to vue-router
     //just a normal object with the same name prop
     const $route = {
@@ -14,6 +18,7 @@ describe("MainNav", () => {
     }
     render(MainNav, {
       global: {
+        plugis: [pinia],
         mocks: {
           //ES6 shorthand
           $route,
