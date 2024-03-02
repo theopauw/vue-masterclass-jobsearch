@@ -5,7 +5,9 @@
       <font-awesome-icon :icon="caretIcon" />
     </div>
   </div>
-  <div v-if="isOpen" class="mt-5 w-full">Child</div>
+  <div v-if="isOpen" class="mt-5 w-full">
+    <slot></slot>
+  </div>
 </template>
 
 <script>
@@ -18,8 +20,8 @@ export default {
   },
   computed: {
     caretIcon() {
-      return this.isOpen ? ["fas", "angle-up"] : ["fas", "angle-down"]
-    }
+      return this.isOpen ? ["fas", "angle-up"] : ["fas", "angle-down"];
+    },
   },
   methods: {
     open() {
