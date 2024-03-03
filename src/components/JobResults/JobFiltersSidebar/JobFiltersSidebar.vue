@@ -7,6 +7,7 @@
           <action-button text="Clear Filters" type="secondary"></action-button>
         </div>
       </div>
+      <collapsible-accordion header="Degree" />
       <collapsible-accordion header="Job Types">
         Placeholder for now
       </collapsible-accordion>
