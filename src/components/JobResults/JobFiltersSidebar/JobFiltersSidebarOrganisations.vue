@@ -3,21 +3,9 @@
     <div class="mt-5">
       <fieldset>
         <ul class="flex flex-row flex-wrap">
-          <li class="h-8 w-1/2">
-            <input id="VueTube" type="checkbox" class="mr-3" />
-            <label for="VueTube">VueTube</label>
-          </li>
-          <li class="h-8 w-1/2">
-            <input id="Between Vue" type="checkbox" class="mr-3" />
-            <label for="Between Vue">Between Vue</label>
-          </li>
-          <li class="h-8 w-1/2">
-            <input id="Et Vue Brute" type="checkbox" class="mr-3" />
-            <label for="Et Vue Brute">Et Vue Brute</label>
-          </li>
-          <li class="h-8 w-1/2">
-            <input id="Vue and a Half Men" type="checkbox" class="mr-3" />
-            <label for="Vue and a Half Men">Vue and a Half Men</label>
+          <li v-for="organisation in UNIQUE_ORGANISATIONS" :key="organisation" class="h-8 w-1/2">
+            <input :id="organisation" type="checkbox" class="mr-3" />
+            <label :for="organisation">{{ organisation }}</label>
           </li>
         </ul>
       </fieldset>
@@ -26,10 +14,17 @@
 </template>
 
 <script>
+import { mapState } from "pinia";
+
+import { useJobsStore, UNIQUE_ORGANISATIONS } from "@/stores/jobs";
+
 import CollapsibleAccordion from "@/components/Shared/CollapsibleAccordion.vue";
 
 export default {
   name: "JobFiltersSidebarOrganisations",
   components: { CollapsibleAccordion },
+  computed: {
+    ...mapState(useJobsStore, [UNIQUE_ORGANISATIONS])
+  }
 };
 </script>
