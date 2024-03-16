@@ -67,5 +67,25 @@ describe("getters", () => {
 
       expect(result).toEqual([{ organization: "Google" }, { organization: "Microsoft" }]);
     });
+    describe("when the user has not selected any organisations", () => {
+      it("identifies jobs that are associated with the given organisations", () => {
+        const jobsStore = useJobsStore();
+        jobsStore.jobs = [
+          { organization: "Google" },
+          { organization: "Amazon" },
+          { organization: "Microsoft" },
+        ];
+        const userStore = useUserStore();
+        userStore.selectedOrganisations = [];
+
+        const result = jobsStore.FILTERED_JOBS_BY_ORGANISATIONS;
+
+        expect(result).toEqual([
+          { organization: "Google" },
+          { organization: "Amazon" },
+          { organization: "Microsoft" },
+        ]);
+      });
+    });
   });
 });
