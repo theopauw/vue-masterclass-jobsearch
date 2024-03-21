@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { computed, toRefs } from "vue";
+
 export default {
   name: "ActionButton",
   props: {
@@ -21,10 +23,15 @@ export default {
       },
     },
   },
-  computed: {
-    buttonClass() {
-      return { [this.type]: true };
-    },
+  setup(props) {
+    const { type } = toRefs(props);
+    const buttonClass = computed(() => {
+      return {
+        [type.value]: true,
+      };
+    });
+
+    return { buttonClass };
   },
 };
 </script>
@@ -39,6 +46,6 @@ button {
 }
 
 .secondary {
-  @apply hover:bg-brand-blue-2 bg-transparent text-brand-blue-1 hover:text-white;
+  @apply bg-transparent text-brand-blue-1 hover:bg-brand-blue-2 hover:text-white;
 }
 </style>
