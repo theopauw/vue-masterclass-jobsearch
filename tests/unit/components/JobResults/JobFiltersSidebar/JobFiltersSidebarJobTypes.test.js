@@ -2,6 +2,9 @@ import { render, screen } from "@testing-library/vue";
 import userEvent from "@testing-library/user-event";
 import { createTestingPinia } from "@pinia/testing";
 
+import { useRouter } from "vue-router";
+vi.mock("vue-router");
+
 import JobFiltersSidebarJobTypes from "@/components/JobResults/JobFiltersSidebar/JobFiltersSidebarJobTypes.vue";
 import { useJobsStore } from "@/stores/jobs";
 import { useUserStore } from "@/stores/user";
@@ -11,7 +14,6 @@ describe("JobFiltersSidebarJobTypes", () => {
     const pinia = createTestingPinia();
     const jobsStore = useJobsStore();
     const userStore = useUserStore();
-    const $router = { push: vi.fn() };
 
     render(JobFiltersSidebarJobTypes, {
       global: {
@@ -19,13 +21,10 @@ describe("JobFiltersSidebarJobTypes", () => {
         stubs: {
           FontAwesomeIcon: true,
         },
-        mocks: {
-          $router,
-        },
       },
     });
 
-    return { jobsStore, userStore, $router };
+    return { jobsStore, userStore };
   };
   it("renders unique list of job types from jobs", async () => {
     const { jobsStore } = renderJobFiltersSidebarJobTypes();
@@ -42,6 +41,7 @@ describe("JobFiltersSidebarJobTypes", () => {
 
   describe("when user clicks textbox", () => {
     it("communicates that user has selected checkbox for job type", async () => {
+      useRouter.mockReturnValue({ push: vi.fn() });
       const { jobsStore, userStore } = renderJobFiltersSidebarJobTypes();
 
       jobsStore.UNIQUE_JOB_TYPES = new Set(["Full-time", "Part-time"]);
@@ -58,7 +58,10 @@ describe("JobFiltersSidebarJobTypes", () => {
     });
 
     it("navigates user to job results page to see fresh batch of filtered jobs", async () => {
-      const { jobsStore, $router } = renderJobFiltersSidebarJobTypes();
+      const push = vi.fn();
+      useRouter.mockReturnValue({ push });
+
+      const { jobsStore } = renderJobFiltersSidebarJobTypes();
 
       jobsStore.UNIQUE_JOB_TYPES = new Set(["Full-time"]);
 
@@ -70,7 +73,7 @@ describe("JobFiltersSidebarJobTypes", () => {
       });
       await userEvent.click(fullTimeCheckbox);
 
-      expect($router.push).toHaveBeenCalledWith({ name: "JobResults" });
+      expect(push).toHaveBeenCalledWith({ name: "JobResults" });
     });
   });
 });
