@@ -2,6 +2,9 @@ import { render, screen } from "@testing-library/vue";
 import userEvent from "@testing-library/user-event";
 import { createTestingPinia } from "@pinia/testing";
 
+import { useRouter } from "vue-router";
+vi.mock("vue-router");
+
 import JobFiltersSidebarOrganisations from "@/components/JobResults/JobFiltersSidebar/JobFiltersSidebarOrganisations.vue";
 import { useJobsStore } from "@/stores/jobs";
 import { useUserStore } from "@/stores/user";
@@ -11,7 +14,6 @@ describe("JobFiltersSidebarOrganisations", () => {
     const pinia = createTestingPinia();
     const jobsStore = useJobsStore();
     const userStore = useUserStore();
-    const $router = { push: vi.fn() };
 
     render(JobFiltersSidebarOrganisations, {
       global: {
@@ -19,15 +21,13 @@ describe("JobFiltersSidebarOrganisations", () => {
         stubs: {
           FontAwesomeIcon: true,
         },
-        mocks: {
-          $router,
-        },
       },
     });
 
-    return { jobsStore, userStore, $router };
+    return { jobsStore, userStore };
   };
   it("renders unique list of organisations from jobs", async () => {
+    useRouter.mockReturnValue({ push: vi.fn() });
     const { jobsStore } = renderJobFiltersSidebarOrganisations();
 
     jobsStore.UNIQUE_ORGANISATIONS = new Set(["Google", "Amazon"]);
@@ -58,7 +58,10 @@ describe("JobFiltersSidebarOrganisations", () => {
     });
 
     it("navigates user to job results page to see fresh batch of filtered jobs", async () => {
-      const { jobsStore, $router } = renderJobFiltersSidebarOrganisations();
+      const push = vi.fn();
+      useRouter.mockReturnValue({ push });
+
+      const { jobsStore } = renderJobFiltersSidebarOrganisations();
 
       jobsStore.UNIQUE_ORGANISATIONS = new Set(["Google"]);
 
@@ -70,7 +73,7 @@ describe("JobFiltersSidebarOrganisations", () => {
       });
       await userEvent.click(googleCheckbox);
 
-      expect($router.push).toHaveBeenCalledWith({ name: "JobResults" });
+      expect(push).toHaveBeenCalledWith({ name: "JobResults" });
     });
   });
 });
