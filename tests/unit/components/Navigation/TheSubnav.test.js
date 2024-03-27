@@ -2,26 +2,20 @@ import { render, screen } from "@testing-library/vue";
 import { createTestingPinia } from "@pinia/testing";
 import { describe, expect, it } from "vitest";
 
+import { useRoute } from "vue-router";
+vi.mock("vue-router");
+
 import TheSubnav from "@/components/Navigation/TheSubnav.vue";
 import { useJobsStore } from "@/stores/jobs";
 
 describe("TheSubnav", () => {
-  const renderTheSubnav = (routeName) => {
+  const renderTheSubnav = () => {
     const pinia = createTestingPinia();
     const jobsStore = useJobsStore();
 
-    //this is not actually linked to vue-router
-    //just a normal object with the same name prop
-    const $route = {
-      name: routeName,
-    };
     render(TheSubnav, {
       global: {
         plugins: [pinia],
-        mocks: {
-          //ES6 shorthand
-          $route,
-        },
         stubs: {
           FontAwesomeIcon: true,
         },
@@ -30,12 +24,12 @@ describe("TheSubnav", () => {
 
     return { jobsStore };
   };
-  
+
   describe("when user is on jobs page", () => {
     it("displays job count", async () => {
-      const routeName = "JobResults";
+      useRoute.mockReturnValue({ name: "JobResults" });
 
-      const { jobsStore } = renderTheSubnav(routeName);
+      const { jobsStore } = renderTheSubnav();
       const numberOfJobs = 16;
       jobsStore.FILTERED_JOBS = Array(numberOfJobs).fill({});
 
@@ -46,9 +40,9 @@ describe("TheSubnav", () => {
 
   describe("when user is not on jobs page", () => {
     it("Does NOT display job count", () => {
-      const routeName = "Home";
-      
-      const { jobsStore } = renderTheSubnav(routeName);
+      useRoute.mockReturnValue({ name: "Home" });
+
+      const { jobsStore } = renderTheSubnav();
       const numberOfJobs = 16;
       jobsStore.FILTERED_JOBS = Array(numberOfJobs).fill({});
 

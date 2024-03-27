@@ -4,26 +4,21 @@ import { RouterLinkStub } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 import { expect } from "vitest";
 
+import { useRoute } from "vue-router";
+vi.mock("vue-router");
+
 import MainNav from "@/components/Navigation/MainNav.vue";
 import { useUserStore } from "@/stores/user";
 
 describe("MainNav", () => {
   const renderMainNav = () => {
+    useRoute.mockReturnValue({ name: "Home" });
     //make a testing pinia, still relying on real store
     const pinia = createTestingPinia();
 
-    //this is not actually linked to vue-router
-    //just a normal object with the same name prop
-    const $route = {
-      name: "Home",
-    };
     render(MainNav, {
       global: {
         plugis: [pinia],
-        mocks: {
-          //ES6 shorthand
-          $route,
-        },
         stubs: {
           FontAwesomeIcon: true,
           //RouterLinkStub has additional functionality to help the tests
