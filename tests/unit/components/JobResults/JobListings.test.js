@@ -14,6 +14,8 @@ vi.mock("vue-router");
 describe("JobListings", () => {
   const renderJobListings = () => {
     const pinia = createTestingPinia();
+    const jobsStore = useJobsStore();
+    jobsStore.FILTERED_JOBS = Array(15).fill({});
     //stub out routerlink so we don't get warnings.
     render(JobListings, {
       global: {
@@ -23,25 +25,23 @@ describe("JobListings", () => {
         },
       },
     });
+    return { jobsStore };
   };
 
   it("fetches jobs", () => {
     useRoute.mockReturnValue({ query: {} });
 
-    renderJobListings();
+    const { jobsStore } = renderJobListings();
 
-    const jobStore = useJobsStore();
     //just test that this has been called, more detailed tests to be run on the store
-    expect(jobStore.FETCH_JOBS).toHaveBeenCalled();
+    expect(jobsStore.FETCH_JOBS).toHaveBeenCalled();
   });
 
   it("displays maximum of 10 jobs", async () => {
     useRoute.mockReturnValue({ query: { page: "1" } });
 
-    renderJobListings();
-
-    const jobStore = useJobsStore();
-    jobStore.jobs = Array(15).fill({});
+    const { jobsStore } = renderJobListings();
+    jobsStore.FILTERED_JOBS = Array(15).fill({});
 
     //find* methods are async - helpful here as we wait for "api"
     const jobListings = await screen.findAllByRole("listitem");
@@ -72,10 +72,9 @@ describe("JobListings", () => {
     it("does not show link to previous page", async () => {
       useRoute.mockReturnValue({ query: { page: "1" } });
 
-      renderJobListings();
+      const { jobsStore } = renderJobListings();
 
-      const jobStore = useJobsStore();
-      jobStore.jobs = Array(15).fill({});
+      jobsStore.FILTERED_JOBS = Array(15).fill({});
 
       //wait for the job listings to load
       await screen.findAllByRole("listitem");
@@ -86,10 +85,8 @@ describe("JobListings", () => {
     it("shows link to next page", async () => {
       useRoute.mockReturnValue({ query: { page: "1" } });
 
-      renderJobListings();
-
-      const jobStore = useJobsStore();
-      jobStore.jobs = Array(15).fill({});
+      const { jobsStore } = renderJobListings();
+      jobsStore.FILTERED_JOBS = Array(15).fill({});
 
       //wait for the job listings to load
       await screen.findAllByRole("listitem");
@@ -102,10 +99,8 @@ describe("JobListings", () => {
     it("shows link to previous page", async () => {
       useRoute.mockReturnValue({ query: { page: "2" } });
 
-      renderJobListings();
-
-      const jobStore = useJobsStore();
-      jobStore.jobs = Array(15).fill({});
+      const { jobsStore } = renderJobListings();
+      jobsStore.FILTERED_JOBS = Array(15).fill({});
 
       //wait for the job listings to load
       await screen.findAllByRole("listitem");
@@ -116,10 +111,8 @@ describe("JobListings", () => {
     it("does not show link to next page", async () => {
       useRoute.mockReturnValue({ query: { page: "2" } });
 
-      renderJobListings();
-
-      const jobStore = useJobsStore();
-      jobStore.jobs = Array(15).fill({});
+      const { jobsStore } = renderJobListings();
+      jobsStore.FILTERED_JOBS = Array(15).fill({});
 
       //wait for the job listings to load
       await screen.findAllByRole("listitem");
