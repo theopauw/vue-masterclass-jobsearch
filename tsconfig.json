@@ -1,14 +1,14 @@
-    {
-      "extends": "@vue/tsconfig/tsconfig.json",
-      "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "tests/**/*"],
-      "exclude": [],
-      "compilerOptions": {
-        "composite": true,
-        "baseUrl": ".",
-        "moduleResolution": "node",
-        "paths": {
-          "@/*": ["./src/*"]
-        },
-        "types": ["vitest/globals", "@testing-library/jest-dom"]
-      }
-    }
+{
+  "extends": "@vue/tsconfig/tsconfig.json",
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "tests/**/*"],
+  "exclude": [],
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    "moduleResolution": "node",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": ["vitest/globals", "@testing-library/jest-dom"]
+  }
+}
