@@ -1,13 +1,15 @@
+import type { Mock } from "vitest";
 import { render, screen } from "@testing-library/vue";
 import axios from "axios";
 
 import SpotLight from "@/components/JobSearch/SpotLight.vue";
 
 vi.mock("axios");
+const axiosGetMock = axios.get as Mock;
 
 describe("SpotLight", () => {
   const mockSpotlightsResponse = (spotlight = {}) => {
-    axios.get.mockResolvedValue({
+    axiosGetMock.mockResolvedValue({
       data: [
         {
           id: 1,
@@ -18,10 +20,10 @@ describe("SpotLight", () => {
       ],
     });
   };
-  
+
   it("provides image to parent component", async () => {
-    const spotlight = { img: "Other image" }
-    mockSpotlightsResponse(spotlight)
+    const spotlight = { img: "Other image" };
+    mockSpotlightsResponse(spotlight);
 
     render(SpotLight, {
       slots: {
@@ -36,8 +38,8 @@ describe("SpotLight", () => {
   });
 
   it("provides title to parent component", async () => {
-    const spotlight = { title: "Other title" }
-    mockSpotlightsResponse(spotlight)
+    const spotlight = { title: "Other title" };
+    mockSpotlightsResponse(spotlight);
 
     render(SpotLight, {
       slots: {
@@ -52,8 +54,8 @@ describe("SpotLight", () => {
   });
 
   it("provides description to parent component", async () => {
-    const spotlight = { description: "Another description" }
-    mockSpotlightsResponse(spotlight)
+    const spotlight = { description: "Another description" };
+    mockSpotlightsResponse(spotlight);
 
     render(SpotLight, {
       slots: {
