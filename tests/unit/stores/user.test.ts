@@ -64,4 +64,19 @@ describe("actions", () => {
       expect(store.selectedDegrees).toEqual(["Master's", "Bachelor's"]);
     });
   });
+
+  describe("CLEAR_USER_JOB_FILTER_SELECTIONS", () => {
+    it("removes all job filters that user has chosen", () => {
+      const store = useUserStore();
+      store.selectedOrganisations = ["Org1", "Org2"];
+      store.selectedJobTypes = ["Full-time", "Part-time"];
+      store.selectedDegrees = ["Master's", "Bachelor's"];
+
+      store.CLEAR_USER_JOB_FILTER_SELECTIONS();
+
+      expect(store.selectedOrganisations).toEqual([]);
+      expect(store.selectedJobTypes).toEqual([]);
+      expect(store.selectedDegrees).toEqual([]);
+    });
+  });
 });
