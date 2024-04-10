@@ -6,6 +6,7 @@ import { useRoute } from "vue-router";
 
 import JobListings from "@/components/JobResults/JobListings.vue";
 import { useJobsStore } from "@/stores/jobs";
+import { useDegreesStore } from "@/stores/degrees";
 
 //mock axios so we don't need to deal with actual API
 vi.mock("axios");
@@ -16,6 +17,7 @@ describe("JobListings", () => {
   const renderJobListings = () => {
     const pinia = createTestingPinia();
     const jobsStore = useJobsStore();
+    const degreesStore = useDegreesStore();
     // @ts-expect-error
     jobsStore.FILTERED_JOBS = Array(15).fill({});
     //stub out routerlink so we don't get warnings.
@@ -27,7 +29,7 @@ describe("JobListings", () => {
         },
       },
     });
-    return { jobsStore };
+    return { jobsStore, degreesStore };
   };
 
   it("fetches jobs", () => {
@@ -37,6 +39,15 @@ describe("JobListings", () => {
 
     //just test that this has been called, more detailed tests to be run on the store
     expect(jobsStore.FETCH_JOBS).toHaveBeenCalled();
+  });
+
+  it("fetches degrees", () => {
+    useRouteMock.mockReturnValue({ query: {} });
+
+    const { degreesStore } = renderJobListings();
+
+    //just test that this has been called, more detailed tests to be run on the store
+    expect(degreesStore.FETCH_DEGREES).toHaveBeenCalled();
   });
 
   it("displays maximum of 10 jobs", async () => {
