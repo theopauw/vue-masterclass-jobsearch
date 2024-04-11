@@ -4,25 +4,29 @@
       <div class="flex flex-row justify-between">
         <h3 class="my-4 text-base font-semibold">What do you want to do?</h3>
         <div class="flex items-center text-sm">
-          <action-button text="Clear Filters" type="secondary" @click="userStore.CLEAR_USER_JOB_FILTER_SELECTIONS"></action-button>
+          <action-button
+            text="Clear Filters"
+            type="secondary"
+            @click="userStore.CLEAR_USER_JOB_FILTER_SELECTIONS"
+          ></action-button>
         </div>
       </div>
-      <job-filters-sidebar-checkbox-group
-        header="Degrees"
-        :unique-values="UNIQUE_DEGREES"
-        :action="userStore.ADD_SELECTED_DEGREES"
-      />
+      <collapsible-accordion header="Degrees">
+        <job-filters-sidebar-checkbox-group
+          :unique-values="UNIQUE_DEGREES"
+          :action="userStore.ADD_SELECTED_DEGREES"
+      /></collapsible-accordion>
 
-      <job-filters-sidebar-checkbox-group
-        header="Job Types"
-        :unique-values="UNIQUE_JOB_TYPES"
-        :action="userStore.ADD_SELECTED_JOB_TYPES"
-      />
-      <job-filters-sidebar-checkbox-group
-        header="Organisations"
-        :unique-values="UNIQUE_ORGANISATIONS"
-        :action="userStore.ADD_SELECTED_ORGANISATIONS"
-      />
+      <collapsible-accordion header="Job Types">
+        <job-filters-sidebar-checkbox-group
+          :unique-values="UNIQUE_JOB_TYPES"
+          :action="userStore.ADD_SELECTED_JOB_TYPES"
+      /></collapsible-accordion>
+      <collapsible-accordion header="Organisations">
+        <job-filters-sidebar-checkbox-group
+          :unique-values="UNIQUE_ORGANISATIONS"
+          :action="userStore.ADD_SELECTED_ORGANISATIONS"
+      /></collapsible-accordion>
     </section>
   </div>
 </template>
@@ -31,6 +35,7 @@
 import { computed } from "vue";
 
 import ActionButton from "@/components/Shared/ActionButton.vue";
+import CollapsibleAccordion from "@/components/Shared/CollapsibleAccordion.vue";
 import JobFiltersSidebarCheckboxGroup from "@/components/JobResults/JobFiltersSidebar/JobFiltersSidebarCheckboxGroup.vue";
 
 import { useJobsStore } from "@/stores/jobs";
